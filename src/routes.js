@@ -1,13 +1,17 @@
 //define as rotas
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs"
+import { createStackNavigator } from '@react-navigation/stack'
+
+import { Login } from "./pages/login"
 import { Home } from "./pages/home"
 import { Passwords } from "./pages/passwords"
 
 import {Ionicons} from '@expo/vector-icons'
 
 const Tab = createBottomTabNavigator();
+const Stack = createStackNavigator()
 
-export function Routes(){
+const TabNavigator = () => {
     return(
         <Tab.Navigator>
             <Tab.Screen
@@ -39,3 +43,21 @@ export function Routes(){
         </Tab.Navigator>
     )
 }
+
+export function StackNavigator() {
+    return(
+        <Stack.Navigator>
+            <Stack.Screen
+                name="login"
+                component={Login}
+            />
+    
+            <Stack.Screen
+                name="tab"
+                component={TabNavigator}
+            />
+        </Stack.Navigator>
+    )
+
+}
+
