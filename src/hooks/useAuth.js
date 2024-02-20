@@ -2,7 +2,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const useAuth = () => {
 
-	const autenticateUser = async (userData) => {
+	const authenticateUser = async (userData) => {
 		try {
 			//getIte recebe o email como chave, e guarda o email e a senha no existingUser
 			const existingUser = await AsyncStorage.getItem(userData.email)
@@ -18,7 +18,6 @@ const useAuth = () => {
 				}
 
 			} else {
-				alert("Credenciais inexistentes")
 				return false
 			}
 
@@ -50,7 +49,7 @@ const useAuth = () => {
 	}
 
 	return {
-		autenticateUser,
+		authenticateUser,
 		registerUser,
 	}
 }

@@ -1,13 +1,60 @@
-import { View, Text, StyleSheet, Pressable } from "react-native"
+import { View, Text, StyleSheet, Pressable, Alert } from "react-native"
 import { SafeAreaView } from "react-native-safe-area-context"
 import { useNavigation } from '@react-navigation/native'
 import { TextInput } from "react-native-gesture-handler"
+import { useState } from "react"
+
+import useAuth from "../../hooks/useAuth"
 
 export function Login(){
     const navigation = useNavigation()
+    const {authenticateUser, registerUser} = useAuth()
 
-    const handlePress = () => {
-        navigation.navigate('tab')
+    const [email, setEmail] = useState('')
+    const [password, setPassword] = useState('')
+
+    const handlePress = async () => {
+        try{
+            if(email === ''){
+                Alert.alert("email vazio", "preencha seu email adequadamente")
+            }else if(password === ''){
+                Alert.alert("senha vazia", "preencha sua senha adequadamente")
+            }else{
+                const register = await authenticateUser({email, password})
+                if(register === true){
+                    Alert.alert("Sucesso no login!","Login efetuado!")
+                    navigation.navigate('tab')
+                }else{
+                    Alert.alert("erro no login","Credenciais erradas :(")
+                }
+            }
+        }catch(error){
+            console.error('Erro durante o login:', error.message);
+            Alert.alert('Erro', 'Ocorreu um erro ao processar o login. Por favor, tente novamente.')
+        }
+    }
+
+    const signUp =  async () =>{
+        try{
+            if(email === ''){
+                Alert.alert("email vazio", "preencha seu email adequadamente")
+            }else if(password === ''){
+                Alert.alert("senha vazia", "preencha sua senha adequadamente")
+            }else{
+
+                const register = await registerUser({email, password})
+
+                if(register === true){
+                    Alert.alert("Sucesso!","Usuário cadastrado!")
+                }else{
+                    Alert.alert("erro","Erro no cadastro :(")
+                }
+            }
+        }catch(error){
+            console.error('Erro durante o cadastro:', error.message);
+            Alert.alert('Erro', 'Ocorreu um erro ao processar o cadastro. Por favor, tente novamente.');
+        }
+
     }
 
     return(
@@ -16,20 +63,29 @@ export function Login(){
                 <Text style={styles.text}>
                     Bem-vindo!
                 </Text>
-            </View>
+            </View> 
             <View style = {styles.login}>
                 <TextInput
                     style={styles.textInput}
-                    defaultValue="E-mail"
+                    placeholder="E-mail"
+                    value={email}
+                    onChangeText={setEmail}
                 />
 
                 <TextInput
-                    defaultValue="Senha"
                     style={styles.textInput}
+                    placeholder="Senha"
+                    value={password}
+                    onChangeText={setPassword}
+                    secureTextEntry={true}
                 />
 
                 <Pressable style = {styles.loginPressable} onPress={handlePress}>
                     <Text style={{color:"white", fontWeight: "bold" }}>Entrar</Text>
+                </Pressable>
+
+                <Pressable onPress={signUp}>
+                    <Text> Cadastre-se </Text>
                 </Pressable>
             </View>
         </SafeAreaView>
