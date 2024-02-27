@@ -5,6 +5,7 @@ import { TextInput } from "react-native-gesture-handler"
 import { useState } from "react"
 
 import useAuth from "../../hooks/useAuth"
+import { changeUserEmail } from "../../sharedVar"
 
 export function Login(){
     const navigation = useNavigation()
@@ -23,9 +24,10 @@ export function Login(){
                 const register = await authenticateUser({email, password})
                 if(register === true){
                     Alert.alert("Sucesso no login!","Login efetuado!")
+                    changeUserEmail(email)
                     navigation.navigate('tab')
                 }else{
-                    Alert.alert("erro no login","Credenciais erradas :(")
+                    Alert.alert("Erro no login","Credenciais erradas :(")
                 }
             }
         }catch(error){
@@ -45,9 +47,9 @@ export function Login(){
                 const register = await registerUser({email, password})
 
                 if(register === true){
-                    Alert.alert("Sucesso!","Usuário cadastrado!")
+                    Alert.alert("Sucesso no cadastro!","Usuário cadastrado!")
                 }else{
-                    Alert.alert("erro","Erro no cadastro :(")
+                    Alert.alert("Erro no cadastro","Erro no cadastro :(")
                 }
             }
         }catch(error){
@@ -141,7 +143,7 @@ const styles = StyleSheet.create({
         flex: 2,
         alignItems: "center",
         justifyContent: "center",
-        backgroundColor: "grey",
+        //backgroundColor: "white",
         width: "80%",
         height: "20%",
         marginBottom: 14,

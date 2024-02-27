@@ -34,11 +34,15 @@ const useAuth = () => {
 			if (existingUser !== null) {
 				throw new Error('Email de usuário já está em uso.');
 			}
-
+			const user = {
+				email: userData.email,
+				password: userData.password,
+				generatedPasswords: [],
+			}
 			// Armazenar as informações do novo usuário no AsyncStorage
 			// setItem deve receber uma chave, que será o email, e para armazenar um objeto, no caso
 			//email e senha, utiliza-se esta transformação
-			await AsyncStorage.setItem(userData.email, JSON.stringify(userData));
+			await AsyncStorage.setItem(userData.email, JSON.stringify(user));
 
 			// Registro bem-sucedido
 			return true;
