@@ -5,6 +5,7 @@ import { useIsFocused } from "@react-navigation/native"
 import useStorage from "../../hooks/useStorage"
 
 import { PasswordItem } from "./components/passwordItem"
+import { userEmail } from "../../sharedVar"
 
 export function Passwords(){
     const [listPasswords, setListPasswords] = useState([])
@@ -16,16 +17,16 @@ export function Passwords(){
 
     useEffect(() => {
         async function loadPasswords(){
-            const passwords = await getItem("@pass")
-            setListPasswords(passwords)
-            console.log(passwords)
+            const user = await getItem(userEmail)
+            setListPasswords(user.generatedPasswords)
+            console.log(listPasswords)
         }
 
         loadPasswords()
     }, [focused])
 
     async function handleDeletePassword(item){
-        const passwords = await removeItem("@pass", item)
+        const passwords = await removeItem(userEmail, item)
         setListPasswords(passwords)
     }
 
